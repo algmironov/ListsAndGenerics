@@ -9,7 +9,7 @@ import java.util.*;
 public class NumsServiceImpl implements NumsService {
 
     @Override
-    public List printOddNums() {
+    public List<Integer> printOddNums() {
         List<Integer> nums = new ArrayList<>(List.of(1, 1, 2, 3, 4, 4, 5, 5, 6, 7));
         List<Integer> oddNums = new ArrayList<>();
         for (Integer num : nums) {
@@ -22,24 +22,21 @@ public class NumsServiceImpl implements NumsService {
 
     @Override
     public List printEvenNums() {
-        List<Integer> nums = new ArrayList<>(List.of(1, 1, 2, 3, 4, 4, 5, 5, 6, 7, 10, 2, 8, 8, 12, 11, 144, 64, 256, 18, 20));
+        List<Integer> nums = new ArrayList<>(List.of(1, 1, 2, 3, 4, 4, 4, 5, 5, 6, 7, 10, 4, 2, 8, 8, 12, 11, 4, 144, 64, 256, 18, 20));
+        Set<Integer> tempSet = new HashSet<>(nums);
+        List<Integer> tempList = new ArrayList<>(tempSet);
         List<Integer> evenNums = new ArrayList<>();
-        for (Integer num : nums) {
+        for (Integer num : tempList) {
             if (num % 2 == 0) {
                 evenNums.add(num);
             }
         }
         evenNums.sort(Comparator.naturalOrder());
-        for (int i = 0; i < evenNums.size() -1; i++) {
-            if (evenNums.get(i).equals(evenNums.get(i + 1))) {
-                evenNums.remove(evenNums.get(i));
-            }
-        }
         return evenNums;
     }
 
     @Override
-    public Set printUniqueWords() {
+    public Set<String> printUniqueWords() {
         List<String> textWithDoubledWords = new ArrayList<>(List.of("На", "дворе", "трава", "на", "траве", "дрова", "раз", "дрова",
                 "два", "дрова", "три", "дрова", "дрова", "вдоль", "двора", "дрова", "вширь", "двора",
                 "не", "вместит", "двор", "дров", "надо", "дрова", "выдворить", "обратно", "со", "двора"));
@@ -48,19 +45,24 @@ public class NumsServiceImpl implements NumsService {
 
     //Метод продолжает предыдущий и удаляет повторяющиеся слова, начинающиеся с заглавной буквы.
     @Override
-    public List printUniqueWordsIgnoringCase() {
+    public List<String> printUniqueWordsIgnoringCase() {
         List<String> textWithDoubledWords = new ArrayList<>(List.of("На", "дворе", "трава", "на", "траве", "дрова", "раз", "дрова",
                 "два", "дрова", "три", "дрова", "дрова", "вдоль", "двора", "дрова", "вширь", "двора",
                 "не", "вместит", "двор", "дров", "надо", "дрова", "выдворить", "обратно", "со", "двора"));
-        Set<String> textWithoutDoubles = new HashSet<>();
-        textWithoutDoubles.addAll(textWithDoubledWords);
+        LinkedHashSet<String> textWithoutDoubles = new LinkedHashSet<>(textWithDoubledWords);
         List<String> textToPrint = new ArrayList<>(textWithoutDoubles);
-        for (int i = 0; i < textToPrint.size() - 1; i++) {
-            if (textToPrint.get(i).equalsIgnoreCase(textToPrint.get(i + 1))) {
-                textToPrint.remove(textToPrint.get(i));
+        int j = 1;
+        for (int i = 0; i < textToPrint.size() - 2; i++) {
+            j++;
+            for (; j < textToPrint.size() - 1; j++) {
+                if (textToPrint.get(i).equalsIgnoreCase(textToPrint.get(j))) {
+                    textToPrint.set(j, "00000");
+                }
             }
         }
-
+        List<String> toRemove = new ArrayList<>();
+        toRemove.add("00000");
+        textToPrint.removeAll(toRemove);
         return textToPrint;
     }
 

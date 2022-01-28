@@ -22,7 +22,7 @@ public class NumsController {
         return numsService.printOddNums();
     }
 
-    @GetMapping("evenNums")
+    @GetMapping("/evenNums")
     public List printEvenNums() {
         return numsService.printEvenNums();
     }
